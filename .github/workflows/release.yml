@@ -1,0 +1,87 @@
+name: Release APK
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Decode keystore from GitHub Secret
+        run: |
+          echo "$RELEASE_KEYSTORE_BASE64" | base64 -d > android/app/release.keystore
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+
+      - name: Set up signing environment variables
+        run: |
+          echo "RELEASE_STORE_FILE=$GITHUB_WORKSPACE/android/app/release.keystore" >> $GITHUB_ENV
+          echo "RELEASE_STORE_PASSWORD=$RELEASE_STORE_PASSWORD" >> $GITHUB_ENV
+          echo "RELEASE_KEY_ALIAS=$RELEASE_KEY_ALIAS" >> $GITHUB_ENV
+          echo "RELEASE_KEY_PASSWORD=$RELEASE_KEY_PASSWORD" >> $GITHUB_ENV
+        env:
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+
+      - name: Sync Android version with package.json
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          VERSION_CODE=$(echo $PKG_VERSION | grep -oE '[0-9]+' | tail -1)
+          if [ -z "$VERSION_CODE" ]; then VERSION_CODE=1; fi
+          sed -i "s/versionName \".*\"/versionName \"$PKG_VERSION\"/" android/app/build.gradle
+          sed -i "s/versionCode [0-9]\+/versionCode $VERSION_CODE/" android/app/build.gradle
+        shell: bash
+
+      - name: Build Android APK
+        run: npm run build:android:release
+
+      - name: Find APK path
+        id: apk
+        run: |
+          APK_PATH=$(find android/app/build/outputs/apk/release -name '*.apk' | head -n 1)
+          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog from file
+        id: changelog
+        run: |
+          VERSION_TAG=${GITHUB_REF_NAME}
+          # Extract changelog for the current version from CHANGELOG.md
+          awk "/## \[${VERSION_TAG//./\\.}\]/ {flag=1; next} /^## \[/ {flag=0} flag" CHANGELOG.md > .changelog_section || true
+          if [ ! -s .changelog_section ]; then echo "No changelog found for version $VERSION_TAG" > .changelog_section; fi
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          cat .changelog_section >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          files: ${{ steps.apk.outputs.apk_path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
