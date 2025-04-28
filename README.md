@@ -8,6 +8,13 @@
 
 GlutenBurg is a free and open source (FOSS) React Native app for browsing, searching, and downloading free eBooks from [Project Gutenberg](https://www.gutenberg.org/) via the [Gutendex API](https://gutendex.com/).
 
+<p align="center">
+  <img src="docs/assets/1.png" alt="Screenshot 1" width="150" />
+  <img src="docs/assets/2.png" alt="Screenshot 2" width="150" />
+  <img src="docs/assets/3.png" alt="Screenshot 3" width="150" />
+  <img src="docs/assets/4.png" alt="Screenshot 4" width="150" />
+</p>
+
 ## Features
 
 - Search for books by title, author, or keyword
