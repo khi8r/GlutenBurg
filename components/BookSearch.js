@@ -32,11 +32,11 @@ const FiltersPanel = React.memo(({ options, handleFilterChange, styles }) => {
       </View>
       <View style={styles.filterRow}>
         <Text style={styles.filterLabel}>Languages:</Text>
-        <View style={{ flex: 1, borderRadius: 6, backgroundColor: THEME.BACKGROUND, borderWidth: 1, borderColor: THEME.SURFACE1, height: 50, justifyContent: 'center' }}>
+        <View style={{ flex: 1, borderRadius: 6, backgroundColor: THEME.BACKGROUND, borderWidth: 1, borderColor: THEME.SURFACE1, justifyContent: 'center' }}>
           <Picker
             selectedValue={languageValue}
             onValueChange={v => handleFilterChange('languages', v)}
-            style={{ flex: 1, color: THEME.BLUE, height: 40, margin: 0, padding: 0 }}
+            style={{ width: '100%', color: THEME.BLUE, minWidth: 0 }}
             dropdownIconColor={THEME.BLUE}
             mode='dialog'
           >
