@@ -18,6 +18,7 @@ const FiltersPanel = React.memo(({ options, handleFilterChange, styles }) => {
           placeholder='E.g. 1800'
           value={options.author_year_start ? String(options.author_year_start) : ''}
           onChangeText={v => handleFilterChange('author_year_start', v ? parseInt(v, 10) : undefined)}
+          placeholderTextColor={THEME.SECONDARY_TEXT}
         />
       </View>
       <View style={styles.filterRow}>
@@ -28,6 +29,7 @@ const FiltersPanel = React.memo(({ options, handleFilterChange, styles }) => {
           placeholder='E.g. 1899'
           value={options.author_year_end ? String(options.author_year_end) : ''}
           onChangeText={v => handleFilterChange('author_year_end', v ? parseInt(v, 10) : undefined)}
+          placeholderTextColor={THEME.SECONDARY_TEXT}
         />
       </View>
       <View style={styles.filterRow}>
@@ -54,6 +56,7 @@ const FiltersPanel = React.memo(({ options, handleFilterChange, styles }) => {
           placeholder='E.g. Fiction, Science, History'
           value={options.topic || ''}
           onChangeText={v => handleFilterChange('topic', v)}
+          placeholderTextColor={THEME.SECONDARY_TEXT}
         />
       </View>
     </View>
