@@ -4,6 +4,12 @@
 </p>
 <h1 align="center">GlutenBurg</h1>
 
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
+  <a href="https://github.com/khi8r/GlutenBurg/releases/latest"><img src="https://img.shields.io/github/v/release/khi8r/GlutenBurg?include_prereleases&label=version&logo=github" alt="GitHub release (latest by date including pre-releases)"></a>
+  <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="JavaScript Style Guide"></a>
+</p>
+
 <p align="center"><b>Pre-alpha:</b> This app is currently in pre-alpha state and under active development.</p>
 
 GlutenBurg is a free and open source (FOSS) React Native app for browsing, searching, and downloading free eBooks from [Project Gutenberg](https://www.gutenberg.org/) via the [Gutendex API](https://gutendex.com/).
@@ -13,6 +19,13 @@ GlutenBurg is a free and open source (FOSS) React Native app for browsing, searc
   <img src="docs/assets/2.png" alt="Screenshot 2" width="150" />
   <img src="docs/assets/3.png" alt="Screenshot 3" width="150" />
   <img src="docs/assets/4.png" alt="Screenshot 4" width="150" />
+</p>
+
+## Installation
+
+<p align="center">
+<a href="obtainium://add/https://github.com/khi8r/GlutenBurg/releases"><img src="docs/assets/obtainium.png" alt="Get it on Obtainium" height="120"/></a>
+<a href="https://github.com/khi8r/GlutenBurg/releases"><img src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png?raw=true" alt="Get it on GitHub" height="120"></a>
 </p>
 
 ## Features
