@@ -34,7 +34,7 @@ export const BookDetail = ({ route }) => {
       <Animated.Image
         source={{ uri: cover }}
         style={styles.cover}
-        resizeMode='cover'
+        resizeMode='contain'
         sharedTransitionTag={`item.${book.id}.cover`}
       />
       <Animated.View entering={FadeIn.delay(500).duration(400)}>
@@ -83,7 +83,7 @@ export const BookDetail = ({ route }) => {
 const styles = StyleSheet.create({
   cover: {
     width: '100%',
-    height: 260,
+    aspectRatio: 2 / 3,
     borderRadius: 10,
     marginBottom: 18,
     backgroundColor: THEME.SURFACE1,
