@@ -8,10 +8,11 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "build:android:release": "cd android && ./gradlew assembleRelease && cd ..",
+    "build:android:release": "npm run bundle-android && cd android && ./gradlew assembleRelease && cd ..",
     "clean:android": "cd android && ./gradlew clean && cd .. && rm -rf android/app/build .gradle .idea build",
     "version:alpha": "npm version prerelease --preid=alpha",
-    "licenses": "node scripts/generate-license-table.js"
+    "licenses": "node scripts/generate-license-table.js",
+    "bundle-android": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res --minify true"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",
