@@ -1,6 +1,12 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+
+// Specify assets for allowed react-native vector icons
+project.ext.vectoricons = [
+    iconFontNames: [ 'Feather.ttf' ]
+]
+
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 /**
@@ -58,7 +64,9 @@ react {
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
+
+def hermesEnabled = true
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
@@ -85,6 +93,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
     }
     signingConfigs {
         debug {
@@ -92,6 +103,11 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+    }
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
         }
     }
     buildTypes {
