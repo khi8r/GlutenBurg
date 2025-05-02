@@ -28,6 +28,7 @@ const BookCardComponent = ({ title, author, image, description, skeleton, subjec
       activeOpacity={0.85}
       onPress={onPress}
       disabled={skeleton}
+      accessibilityRole='button'
     >
       <View
         style={{
