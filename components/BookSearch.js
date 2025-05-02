@@ -196,6 +196,7 @@ export const BookSearch = ({ value, onSearch, loading }) => {
             disabled={loading || !isOptionsChanged || searchDisabled}
             accessibilityLabel='Search'
             accessible
+            testID='search-btn'
           >
             {loading
               ? <ActivityIndicator size='small' color={THEME.ACCENT} />
