@@ -32,7 +32,7 @@ export const BookDetail = ({ route }) => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: THEME.BACKGROUND }} contentContainerStyle={{ padding: 20 }}>
       <Animated.Image
-        source={{ uri: cover }}
+        source={{ uri: cover, cache: 'force-cache' }}
         style={styles.cover}
         resizeMode='contain'
         sharedTransitionTag={`item.${book.id}.cover`}
