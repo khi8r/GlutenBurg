@@ -8,6 +8,13 @@ jest.mock('react-native-reanimated', () => {
   }
 
   return Object.assign({}, Reanimated, {
-    Image: 'Image'
+    Image: 'Image',
+    View: jest.fn((props) => <div {...props} />)
   })
 })
+
+jest.mock('@react-native-async-storage/async-storage', () =>
+  require('@react-native-async-storage/async-storage/jest/async-storage-mock')
+)
+
+global.requestAnimationFrame = null
