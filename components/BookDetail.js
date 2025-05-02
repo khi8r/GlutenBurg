@@ -31,12 +31,15 @@ export const BookDetail = ({ route }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: THEME.BACKGROUND }} contentContainerStyle={{ padding: 20 }}>
-      <Animated.Image
-        source={{ uri: cover, cache: 'force-cache' }}
-        style={styles.cover}
-        resizeMode='contain'
-        sharedTransitionTag={`item.${book.id}.cover`}
-      />
+      {cover && (
+        <Animated.Image
+          source={{ uri: cover, cache: 'force-cache' }}
+          style={styles.cover}
+          resizeMode='contain'
+          sharedTransitionTag={`item.${book.id}.cover`}
+          testID='cover-image'
+        />
+      )}
       <Animated.View entering={FadeIn.delay(500).duration(400)}>
         <Text style={styles.title}>{book.title}</Text>
         {author && (
