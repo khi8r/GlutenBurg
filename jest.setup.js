@@ -1,3 +1,6 @@
+jest.mock('react-native-navigation-bar-color', () => jest.fn())
+jest.mock('react-native-bootsplash', () => ({ hide: jest.fn() }))
+
 require('react-native-reanimated').setUpTests()
 
 jest.mock('react-native-reanimated', () => {
@@ -18,3 +21,10 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 )
 
 global.requestAnimationFrame = null
+
+jest.mock('react-native-vector-icons/Feather', () => 'Feather')
+jest.mock('@react-native-picker/picker', () => {
+  const Picker = ({ children, ...props }) => <select {...props}>{children}</select>
+  Picker.Item = ({ label, value }) => <option value={value}>{label}</option>
+  return { Picker }
+})
