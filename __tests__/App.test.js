@@ -3,9 +3,6 @@ import { render, fireEvent } from '@testing-library/react-native'
 import * as useBooksHook from '../hooks/useBooks'
 import App from '../App'
 
-jest.mock('react-native-navigation-bar-color', () => jest.fn())
-jest.mock('react-native-bootsplash', () => ({ hide: jest.fn() }))
-
 const mockBooks = [
   {
     id: 1,
