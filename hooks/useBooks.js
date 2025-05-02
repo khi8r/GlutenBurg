@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 function useBooks (options = {}) {
   const [books, setBooks] = useState([])
@@ -38,23 +38,27 @@ function useBooks (options = {}) {
     try {
       const cached = await AsyncStorage.getItem(cacheKey)
       if (cached) {
-        setBooks(JSON.parse(cached))
-        setLoading(false)
+        const { data, timestamp } = JSON.parse(cached)
+        if (timestamp && Date.now() - timestamp < 86400000) {
+          setBooks(data)
+          setLoading(false)
+          return
+        }
       }
       const res = await fetch(url)
       if (!res.ok) throw new Error('Network response was not ok')
-      const data = await res.json()
-      setBooks(data.results || [])
-      setNextPage(data.next)
+      const apiData = await res.json()
+      setBooks(apiData.results || [])
+      setNextPage(apiData.next)
       setLoading(false)
-      AsyncStorage.setItem(cacheKey, JSON.stringify(data.results || []))
+      AsyncStorage.setItem(cacheKey, JSON.stringify({ data: apiData.results || [], timestamp: Date.now() }))
     } catch (err) {
       setError(err)
       setLoading(false)
     }
   }
 
-  const loadMore = async () => {
+  const loadMore = useCallback(async () => {
     if (!nextPage || loadingMore || loading || refreshing) return
     setLoadingMore(true)
     try {
@@ -68,13 +72,13 @@ function useBooks (options = {}) {
       setError(err)
       setLoadingMore(false)
     }
-  }
+  }, [nextPage, loadingMore, loading, refreshing])
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     setRefreshing(true)
     await fetchBooks()
     setRefreshing(false)
-  }
+  }, [fetchBooks])
 
   useEffect(() => {
     fetchBooks()

@@ -52,7 +52,7 @@ const BookCardComponent = ({ title, author, image, description, skeleton, subjec
             )
           : (
             <Animated.Image
-              source={{ uri: image }}
+              source={{ uri: image, cache: 'force-cache' }}
               style={{ width: '100%', height: 180, borderRadius: 8, marginBottom: 12, backgroundColor: THEME.SURFACE1, borderWidth: 2, borderColor: THEME.LAVENDER }}
               resizeMode='cover'
               sharedTransitionTag={sharedElementId}
